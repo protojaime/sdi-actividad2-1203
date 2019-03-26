@@ -3,8 +3,11 @@ var express = require('express');
 var app = express();
 
 var swig = require('swig');
-
+var fileUpload = require('express-fileupload');
+app.use(fileUpload());
 var mongo = require('mongodb');
+
+
 
 var bodyParser = require('body-parser');
 //meter body parser dentro de express
@@ -17,7 +20,11 @@ gestorBD.init(app,mongo);
 
 // Variables
 app.set('port', 8081);
-app.set('db', 'mongodb://admin:sdi1203@tiendamusica-shard-00-00-96snv.mongodb.net:27017,tiendamusica-shard-00-01-96snv.mongodb.net:27017,tiendamusica-shard-00-02-96snv.mongodb.net:27017/test?ssl=true&replicaSet=tiendamusica-shard-0&authSource=admin&retryWrites=true');
+//app.set('db', 'mongodb://admin:sdi1203@tiendamusica-shard-00-00-96snv.mongodb.net:27017,tiendamusica-shard-00-01-96snv.mongodb.net:27017,tiendamusica-shard-00-02-96snv.mongodb.net:27017/test?ssl=true&replicaSet=tiendamusica-shard-0&authSource=admin&retryWrites=true');
+app.set('db', 'mongodb://localhost:27017/uomusic');
+
+
+
 
 //antes de mirar controladores mirar public lo primero
 app.use(express.static('public'));
