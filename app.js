@@ -1,7 +1,6 @@
-// Módulos
+//Modulos
 var express = require('express');
 var app = express();
-app.use(express.static('public'));
 
 var expressSession = require('express-session');
 app.use(expressSession({
@@ -10,32 +9,70 @@ app.use(expressSession({
     saveUninitialized: true
 }));
 
-var expressSession = require('express-session');
+var crypto = require('crypto');
+
+var fileUpload = require('express-fileupload');
+app.use(fileUpload());
+
+var swig = require('swig');
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
-routerUsuarioSession.use(function(req, res, next) {
+routerUsuarioSession.use(function (req, res, next) {
     console.log("routerUsuarioSession");
-    if ( req.session.usuario ) {
+    if (req.session.usuario) {
         // dejamos correr la petición
         next();
     } else {
-        console.log("va a : "+req.session.destino)
+        console.log("va a : " + req.session.destino)
         res.redirect("/identificarse");
     }
 });
 //Aplicar routerUsuarioSession
-app.use("/canciones/agregar",routerUsuarioSession);
-app.use("/publicaciones",routerUsuarioSession);
+app.use("/canciones/agregar", routerUsuarioSession);
+app.use("/publicaciones", routerUsuarioSession);
+
+
+//routerUsuarioAutor
+var routerUsuarioAutor = express.Router();
+routerUsuarioAutor.use(function (req, res, next) {
+    console.log("routerUsuarioAutor");
+    var path = require('path');
+    var id = path.basename(req.originalUrl);
+// Cuidado porque req.params no funciona
+// en el router si los params van en la URL.
+    gestorBD.obtenerCanciones(
+        {_id: mongo.ObjectID(id)}, function (canciones) {
+            console.log(canciones[0]);
+            if (canciones[0].autor == req.session.usuario) {
+                next();
+            } else {
+                res.redirect("/tienda");
+            }
+        })
+});
+//Aplicar routerUsuarioAutor
+app.use("/cancion/modificar", routerUsuarioAutor);
+app.use("/cancion/eliminar", routerUsuarioAutor);
+
+app.get('/', function (req, res) {
+    res.redirect('/tienda');
+})
+
+
 
 //routerAudios
 var routerAudios = express.Router();
-routerAudios.use(function(req, res, next) {
+routerAudios.use(function (req, res, next) {
     console.log("routerAudios");
     var path = require('path');
     var idCancion = path.basename(req.originalUrl, '.mp3');
     gestorBD.obtenerCanciones(
-        {id : mongo.ObjectID(idCancion) }, function (canciones) {
-            if(req.session.usuario && canciones[0].autor == req.session.usuario ){
+        {"_id": mongo.ObjectID(idCancion)}, function (canciones) {
+            if (req.session.usuario && canciones[0].autor == req.session.usuario) {
                 next();
             } else {
                 res.redirect("/tienda");
@@ -43,19 +80,10 @@ routerAudios.use(function(req, res, next) {
         })
 });
 //Aplicar routerAudios
-app.use("/audios/",routerAudios);
+app.use("/audios/", routerAudios);
 
-
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-var swig = require('swig');
-
+app.use(express.static('public'));
 var mongo = require('mongodb');
-
-var fileUpload = require('express-fileupload');
-app.use(fileUpload());
 
 var crypto = require('crypto');
 
