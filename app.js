@@ -5,13 +5,6 @@ var app = express();
 var fs = require('fs');
 var https = require('https');
 
-https.createServer({
-    key: fs.readFileSync('certificates/alice.key'),
-    cert: fs.readFileSync('certificates/alice.crt')
-}, app).listen(app.get('port'), function() {
-    console.log("Servidor activo");
-});
-
 
 var expressSession = require('express-session');
 app.use(expressSession({
