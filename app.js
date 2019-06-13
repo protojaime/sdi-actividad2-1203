@@ -2,6 +2,17 @@
 var express = require('express');
 var app = express();
 
+var fs = require('fs');
+var https = require('https');
+
+https.createServer({
+    key: fs.readFileSync('certificates/alice.key'),
+    cert: fs.readFileSync('certificates/alice.crt')
+}, app).listen(app.get('port'), function() {
+    console.log("Servidor activo");
+});
+
+
 var expressSession = require('express-session');
 app.use(expressSession({
     secret: 'abcdefg',
@@ -50,12 +61,12 @@ routerUsuarioAutor.use(function (req, res, next) {
                 next();
             } else {
                 var criterio = {
-                    usuario : req.session.usuario,
-                    cancionId : mongo.ObjectID(idCancion)
+                    usuario: req.session.usuario,
+                    cancionId: mongo.ObjectID(idCancion)
                 };
 
-                gestorBD.obtenerCompras(criterio ,function(compras){
-                    if (compras != null && compras.length > 0 ){
+                gestorBD.obtenerCompras(criterio, function (compras) {
+                    if (compras != null && compras.length > 0) {
                         next();
                     } else {
                         res.redirect("/tienda");
@@ -67,8 +78,8 @@ routerUsuarioAutor.use(function (req, res, next) {
 //Aplicar routerUsuarioAutor
 app.use("/cancion/modificar", routerUsuarioAutor);
 app.use("/cancion/eliminar", routerUsuarioAutor);
-app.use("/cancion/comprar",routerUsuarioSession);
-app.use("/compras",routerUsuarioSession);
+app.use("/cancion/comprar", routerUsuarioSession);
+app.use("/compras", routerUsuarioSession);
 
 
 //routerAudios
@@ -108,7 +119,16 @@ require("./routes/rcanciones.js")(app, swig, gestorBD);
 
 app.get('/', function (req, res) {
     res.redirect('/tienda');
-})
+});
+
+app.use(function (err, req, res, next) {
+    console.log("Error producido: " + err); //we log the error in our db
+    if (!res.headersSent) {
+        res.status(400);
+        res.send("Recurso no disponible");
+    }
+});
+
 
 // lanzarel servidor
 app.listen(app.get('port'), function () {
