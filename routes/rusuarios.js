@@ -39,6 +39,34 @@ module.exports = function(app, swig, gestorBD) {
         var respuesta = swig.renderFile('views/bidentificacion.html', {});
         res.send(respuesta);
     });
+    app.get("/listadoUsuarios", function(req, res) {
+        /*metodo para listado*/
+        let criterio = {
+            $and: [
+                {
+                    email: {
+                        $ne: req.session.usuario.email
+                    }
+                },
+                {
+                    valid: {
+                        $ne: false
+                    }
+                }
+            ]
+        };
+        gestorBD.obtenerUsuarios(criterio, function (usuarios) {
+            if (usuarios == null) {
+                res.send("Error al listar ");
+            } else {
+                var respuesta = swig.renderFile('views/blistadoUsuarios.html',
+                    {
+                        usuarios: usuarios
+                    });
+                res.send(respuesta);
+            }
+        });
+    });
 
     app.post("/identificarse", function(req, res) {
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
@@ -60,6 +88,11 @@ module.exports = function(app, swig, gestorBD) {
             }
         });
     });
+
+
+
+
+
 
     app.get('/desconectarse', function (req, res) {
         req.session.usuario = null;
