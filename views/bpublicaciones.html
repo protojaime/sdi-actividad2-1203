@@ -5,7 +5,7 @@
 
 <!-- Agregar Canción -->
 <div class="row text-right">
-	<a href="/canciones/agregar" class="btn btn-info" role="button">Agregar canción</a>
+	<a href="/productos/agregar" class="btn btn-info" role="button">Agregar producto</a>
 </div>
 
 <div class="table-responsive">
@@ -13,17 +13,18 @@
 		<thead>
 			<tr>
 				<th>Nombre</th>
-				<th>Genero</th>
+				<th>Descripcion</th>
+				<th>Fecha</th>
 				<th class="col-md-1"></th>
 			</tr>
 		</thead>
 		<tbody>
-		{% for cancion in canciones %}
-			<tr>
-				<td>{{ cancion.nombre }}</td>
-				<td>{{ cancion.genero }}</td>
-				<td><a href="/cancion/modificar/{{ cancion._id.toString() }}">Modificar</a> <br>
-					<a href="/cancion/eliminar/{{ cancion._id.toString() }}">Eliminar</a> <br>
+		{% for producto in productos %}
+		<tr>
+			    <td>{{ producto.nombre }}</td>
+				<td>{{ producto.descripcion }}</td>
+				<td><a href="/producto/modificar/{{ producto._id.toString() }}">Modificar</a> <br>
+					<a href="/producto/eliminar/{{ producto._id.toString() }}">Eliminar</a> <br>
 			    </td>
 			</tr>
 		{% endfor %}
@@ -33,7 +34,7 @@
 
 <!-- Agregar Canción -->
 <div class="row text-right">
-	<a href="/canciones/agregar" class="btn btn-info" role="button">Agregar canción</a>
+	<a href="/productos/agregar" class="btn btn-info" role="button">Agregar producto</a>
 </div>
 
 {% endblock %}

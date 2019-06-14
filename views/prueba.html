@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Canciones</title>
+    <title>productos</title>
 </head>
 <body>
     <h1>{{ vendedor }}</h1>
     <ul>
-        {% for cancion in canciones %}
+        {% for producto in productos %}
         <li>
-            {{ cancion.nombre }} - {{ cancion.precio }}
+            {{ producto.nombre }} - {{ producto.precio }}
         </li>
         {% endfor %}
     </ul>
