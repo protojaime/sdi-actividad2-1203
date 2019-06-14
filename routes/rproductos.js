@@ -244,18 +244,12 @@ module.exports = function (app, swig, gestorBD) {
             if (result == null) {
                 res.send("Error al modificar ");
             } else {
-                paso1ModificarPortada(req.files, id, function (result) {
-                    if (result == null) {
-                        res.send("Error en la modificación");
-                    } else {
-                        res.redirect("/publicaciones");
-                    }
-                });
+                res.redirect("/publicaciones");
             }
         });
     });
 
-
+/*
     function paso1ModificarPortada(files, id, callback) {
         if (files.portada != null) {
             var imagen = files.portada;
@@ -285,6 +279,6 @@ module.exports = function (app, swig, gestorBD) {
             callback(true); // FIN
         }
     };
-
+*/
 
 }
