@@ -5,19 +5,19 @@ module.exports = {
         this.mongo = mongo;
         this.app = app;
     },
-    obtenerCancionesPg : function(criterio,pg,funcionCallback){
+    obtenerProductosPg : function(criterio,pg,funcionCallback){
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('canciones');
+                var collection = db.collection('productos');
                 collection.count(function(err, count){
                     collection.find(criterio).skip( (pg-1)*4 ).limit( 4 )
-                        .toArray(function(err, canciones) {
+                        .toArray(function(err, productos) {
                             if (err) {
                                 funcionCallback(null);
                             } else {
-                                funcionCallback(canciones, count);
+                                funcionCallback(productos, count);
                             }
                             db.close();
                         });
@@ -59,12 +59,12 @@ module.exports = {
             }
         });
     },
-    eliminarCancion : function(criterio, funcionCallback) {
+    eliminarProducto : function(criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('canciones');
+                var collection = db.collection('productos');
                 collection.remove(criterio, function(err, result) {
                     if (err) {
                         funcionCallback(null);
@@ -76,13 +76,13 @@ module.exports = {
             }
         });
     },
-    modificarCancion : function(criterio, cancion, funcionCallback) {
+    modificarProducto : function(criterio, producto, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('canciones');
-                collection.update(criterio, {$set: cancion}, function(err, result) {
+                var collection = db.collection('productos');
+                collection.update(criterio, {$set: producto}, function(err, result) {
                     if (err) {
                         funcionCallback(null);
                     } else {
@@ -127,30 +127,30 @@ module.exports = {
             }
         });
     },
-    obtenerCanciones : function(criterio, funcionCallback){
+    obtenerProductos : function(criterio, funcionCallback){
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('canciones');
-                collection.find(criterio).toArray(function(err, canciones) {
+                var collection = db.collection('productos');
+                collection.find(criterio).toArray(function(err, productos) {
                     if (err) {
                         funcionCallback(null);
                     } else {
-                        funcionCallback(canciones);
+                        funcionCallback(productos);
                     }
                     db.close();
                 });
             }
         });
     },
-    insertarCancion: function (cancion, funcionCallback) {
+    insertarProducto: function (producto, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('canciones');
-                collection.insert(cancion, function (err, result) {
+                var collection = db.collection('productos');
+                collection.insert(producto, function (err, result) {
                     if (err) {
                         funcionCallback(null);
                     } else {

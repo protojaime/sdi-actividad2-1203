@@ -1,28 +1,25 @@
 {% extends "base.html" %} {% block titulo %} Mis publicaciones {% endblock %}
 
 {% block contenido_principal %}
-<h2>Mis compras</h2>
+<h2>Mis productos</h2>
 
-<!-- Agregar Canción -->
+<!-- Agregar Productos -->
 <div class="table-responsive">
     <table class="table table-hover">
         <thead>
         <tr>
             <th>Nombre</th>
-            <th>Genero</th>
+            <th>Descripcion</th>
+            <th>Fecha</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody>
-        {% for cancion in canciones %}
+        {% for producto in productos %}
         <tr>
-            <td>{{ cancion.nombre }}</td>
-            <td>{{ cancion.genero }}</td>
-            <td>
-                <audio controls>
-                    <source src="/audios/{{ cancion._id.toString() }}.mp3" type="audio/mpeg">
-                </audio>
-            </td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>{{ producto.fecha }}</td>
         </tr>
         {% endfor %}
         </tbody>

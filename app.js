@@ -44,9 +44,9 @@ routerUsuarioSession.use(function(req, res, next) {
     }
 });
 //Aplicar routerUsuarioSession
-app.use("/canciones/agregar",routerUsuarioSession);
+app.use("/productos/agregar",routerUsuarioSession);
 app.use("/publicaciones",routerUsuarioSession);
-app.use("/cancion/comprar",routerUsuarioSession);
+app.use("/producto/comprar",routerUsuarioSession);
 app.use("/compras",routerUsuarioSession);
 
 //routerAudios
@@ -54,15 +54,15 @@ var routerAudios = express.Router();
 routerAudios.use(function(req, res, next) {
     console.log("routerAudios");
     var path = require('path');
-    var idCancion = path.basename(req.originalUrl, '.mp3');
-    gestorBD.obtenerCanciones(
-        {id : mongo.ObjectID(idCancion) }, function (canciones) {
-            if(canciones[0].autor == req.session.usuario ){
+    var idProducto = path.basename(req.originalUrl, '.mp3');
+    gestorBD.obtenerProductoes(
+        {id : mongo.ObjectID(idProducto) }, function (productos) {
+            if(productos[0].autor == req.session.usuario ){
                 next();
             } else {
                 var criterio = {
                     usuario : req.session.usuario,
-                    cancionId : mongo.ObjectID(idCancion)
+                    productoId : mongo.ObjectID(idProducto)
                 };
 
                 gestorBD.obtenerCompras(criterio ,function(compras){
@@ -87,9 +87,9 @@ routerUsuarioAutor.use(function(req, res, next) {
     var id = path.basename(req.originalUrl);
 // Cuidado porque req.params no funciona
 // en el router si los params van en la URL.
-    gestorBD.obtenerCanciones(
-        {_id: mongo.ObjectID(id) }, function (canciones) {
-            if(canciones[0].autor == req.session.usuario ){
+    gestorBD.obtenerProductos(
+        {_id: mongo.ObjectID(id) }, function (productos) {
+            if(productos[0].autor == req.session.usuario ){
                 next();
             } else {
                 res.redirect("/tienda");
@@ -97,8 +97,8 @@ routerUsuarioAutor.use(function(req, res, next) {
         })
 });
 //Aplicar routerUsuarioAutor
-app.use("/cancion/modificar",routerUsuarioAutor);
-app.use("/cancion/eliminar",routerUsuarioAutor);
+app.use("/producto/modificar",routerUsuarioAutor);
+app.use("/producto/eliminar",routerUsuarioAutor);
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -137,7 +137,7 @@ routerUsuarioToken.use(function(req, res, next) {
     }
 });
 // Aplicar routerUsuarioToken
-app.use('/api/cancion', routerUsuarioToken);
+app.use('/api/producto', routerUsuarioToken);
 
 var swig = require('swig');
 
@@ -153,7 +153,8 @@ gestorBD.init(app,mongo);
 
 // Variables
 app.set('port', 8081);
-app.set('db', 'mongodb://admin:sdi1203@tiendamusica-shard-00-00-96snv.mongodb.net:27017,tiendamusica-shard-00-01-96snv.mongodb.net:27017,tiendamusica-shard-00-02-96snv.mongodb.net:27017/test?ssl=true&replicaSet=tiendamusica-shard-0&authSource=admin&retryWrites=true');
+    app.set('db', 'mongodb://admin:sdi1203@sdi-actividad2-1203-shard-00-00-96snv.mongodb.net:27017,sdi-actividad2-1203-shard-00-01-96snv.mongodb.net:27017,sdi-actividad2-1203-shard-00-02-96snv.mongodb.net:27017/test?ssl=true&replicaSet=sdi-actividad2-1203-shard-0&authSource=admin&retryWrites=true&w=majority');
+//app.set('db', 'mongodb://admin:sdi1203@tiendamusica-shard-00-00-96snv.mongodb.net:27017,tiendamusica-shard-00-01-96snv.mongodb.net:27017,tiendamusica-shard-00-02-96snv.mongodb.net:27017/test?ssl=true&replicaSet=tiendamusica-shard-0&authSource=admin&retryWrites=true');
 //app.set('db', 'mongodb://localhost:27017/uomusic');
 app.set('clave','abcdefg');
 app.set('crypto',crypto);
@@ -161,8 +162,8 @@ app.set('crypto',crypto);
 
 //Rutas/controladores por lógica
 require("./routes/rusuarios.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
-require("./routes/rcanciones.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
-require("./routes/rapicanciones.js")(app, gestorBD);
+require("./routes/rproductos.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
+require("./routes/rapiproductos.js")(app, gestorBD);
 
 app.get('/', function (req, res) {
     res.redirect('/tienda');
