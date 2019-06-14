@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block titulo %}  Usuarios {% endblock %}
+
+{% block contenido_principal %}
+<h2>Usuarios</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.apellidos }}</td>
+            <td>{{ producto.email }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
