@@ -106,7 +106,7 @@ module.exports = function (app, swig, gestorBD) {
         var producto = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
- fecha: req.body.fecha,
+            fecha: req.body.fecha,
             precio: req.body.precio,
             autor: req.session.usuario
         }
@@ -114,6 +114,8 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.insertarProducto(producto, function (id) {
             if (id == null) {
                 res.send("Error al insertar producto");
+            }else {
+                res.redirect("/publicaciones");
             }
 
 
@@ -152,10 +154,17 @@ module.exports = function (app, swig, gestorBD) {
     })
 
     app.get("/productos", function (req, res) {
-        var productos = [{"nombre": "Blank space", "precio": "1.2"}, {
+        var productos = [
+            {"nombre": "Blank space",
+                "descripcion": "Blank space",
+                "fecha": "Blank space",
+            "precio": "1.2"}, {
             "nombre": "See you again",
             "precio": "1.3"
-        }, {"nombre": "Uptown Funk", "precio": "1.1"}];
+        }, {"nombre": "Uptown Funk",
+                "descripcion": "zapato",
+                "fecha": "11/08/11",
+                "precio": "1.1"}];
         var respuesta = swig.renderFile('views/btienda.html', {
             vendedor: 'Tienda de productos',
             productos: productos
