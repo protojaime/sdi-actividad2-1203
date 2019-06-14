@@ -80,7 +80,7 @@ module.exports = function (app, swig, gestorBD) {
                     var cambioUSD = objetoRespuesta.rates.USD;
 // nuevo campo "usd"
                     canciones[0].usd = cambioUSD * canciones[0].precio;
-                    var respuesta = swig.renderFile('views/bcancion.html',
+                    var respuesta = swig.renderFile('views/bproducto.html',
                         {
                             cancion: canciones[0]
                         });
@@ -210,7 +210,7 @@ module.exports = function (app, swig, gestorBD) {
             if (canciones == null) {
                 res.send(respuesta);
             } else {
-                var respuesta = swig.renderFile('views/bcancionModificar.html',
+                var respuesta = swig.renderFile('views/bproductoModificar.html',
                     {
                         cancion: canciones[0]
                     });
