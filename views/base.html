@@ -28,13 +28,21 @@
         <li id="mTienda" class="active"><a href="/tienda">Tienda</a></li>
         <li id="mPublicaciones"><a href="/publicaciones">Publicaciones</a></li>
         <li id="mCompras"><a href="/compras">Compras</a></li>
+        {% if (usuario != null && usuario != undefined && usuario.tipoUsuario==2  ) %}
         <li id="mUsuarios"><a href="/listadoUsuarios">Usuarios</a></li>
+        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li id="cartera"><a type="text" href="#">{{usuario.cartera}}€</a></li>
+        {% if (usuario == null || usuario == undefined) %}
         <li><a href="/registrarse"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>
         <li><a href="/identificarse"><span class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
-      </ul>
+        {% endif %}
+        {% if (usuario != null && usuario != undefined)%}
+        <li id="cartera"><a type="text" href="#">{{usuario.cartera}}€</a></li>
+        <li id="emailLink"><a type="text" href="/publicaciones">{{usuario.email}}</a></li>
+        <li><a id="logoutLink" href="/desconectarse">Desconectarse</a></li>
+          {% endif %}
+            </ul>
     </div>
   </div>
 </nav>
@@ -49,7 +57,7 @@
       if (tipoMensaje == "" ){
         tipoMensaje = 'alert-info';
       }
-      $( ".container" )
+      $(".container")
               .append("<div class='alert "+tipoMensaje+"'>"+mensaje+" </div>");
     }
     function getUrlParameter(name) {

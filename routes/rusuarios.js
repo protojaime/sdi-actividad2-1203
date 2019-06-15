@@ -18,7 +18,8 @@ module.exports = function(app, swig, gestorBD) {
             apellidos : req.body.apellidos,
             email : req.body.email,
             cartera: 100,
-            password : seguro
+            password : seguro,
+            tipoUsuario: 1 //tipo 1 usuario normal, tipo 2 admin
         }
 
         var criterio = {
@@ -29,13 +30,15 @@ module.exports = function(app, swig, gestorBD) {
             if (usuarios == null || usuarios.length == 0) {
                 gestorBD.insertarUsuario(usuario, function(id) {
                     if (id == null){
-                        res.redirect("/registrarse?mensaje=Error al registrar usuario");
+                        res.redirect("/registrarse?mensaje=Error al registrar usuario"+
+                            "&tipoMensaje=alert-danger ");
                     } else {
                         res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
                     }
                 });
             } else {
-                res.send("Error al insertar ");
+                res.redirect("/registrarse?mensaje=ya existe un usuario con ese correo"+
+                    "&tipoMensaje=alert-danger");
             }
         });
     });
@@ -60,17 +63,17 @@ module.exports = function(app, swig, gestorBD) {
                         res.redirect("/identificarse" +
                             "?mensaje=Email o password incorrecto" +
                             "&tipoMensaje=alert-danger ");
-                        app.get("logger").error('Email o password incorrecto');
+                        console.log('Email o password incorrecto');
                     } else {
                         req.session.usuario = usuarios[0];
                         console.log('usuario ' + req.session.usuario.email + "logueado");
                         delete req.session.usuario.password;
-                     //   if (usuarios[0].rol == 'admin')
-                        var respuesta = swig.renderFile('views/btienda.html', {
-                            usuario: req.session.usuario
-                        });
-                        res.send(respuesta);
+                        if (req.session.usuario.tipoUsuario == 2)
+                            res.redirect("/listadoUsuarios");
+                        else
+                            res.redirect("/publicaciones");
 
+                        //res.send(respuesta);
                     }
                 }
             );
@@ -146,7 +149,8 @@ module.exports = function(app, swig, gestorBD) {
     });
     app.get('/desconectarse', function (req, res) {
         req.session.usuario = null;
-        res.send("Usuario desconectado");
+        res.redirect("/tienda");
+        //res.send("Usuario desconectado");
     })
 
 
