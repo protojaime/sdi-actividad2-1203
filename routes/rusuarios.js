@@ -12,6 +12,8 @@ module.exports = function(app, swig, gestorBD) {
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
         var usuario = {
+            nombre : req.body.nombre,
+            apellidos : req.body.apellidos,
             email : req.body.email,
             password : seguro
         }
@@ -88,16 +90,41 @@ module.exports = function(app, swig, gestorBD) {
             }
         });
     });
-
-
-
-
-
-
     app.get('/desconectarse', function (req, res) {
         req.session.usuario = null;
         res.send("Usuario desconectado");
     })
 
 
-}
+    app.post('/EliminarUsuarios', function (req, res) {
+
+        let idUsuariosBorrar = req.body.idUsuariosBorrar;
+        if (!Array.isArray(idUsuariosBorrar)) {
+            let aux = idUsuariosBorrar;
+            idUsuariosBorrar = [];
+            idUsuariosBorrar.push(aux);
+        }
+        let criterio = {
+            email: {$in: idUsuariosBorrar}
+        };
+        gestorBD.eliminarUsuarios(criterio, function (usuarios) {
+            if (usuarios == null) {
+                console.log("Fallo al intentar eliminar los usuarios");
+            } else {
+                let criterio = {
+                    creador: {$in: idUsuariosBorrar}
+                };
+                gestorBD.eliminarProducto(criterio, function (ofertas) {
+                    if (ofertas == null) {
+                        console.log("No se pudieron eliminar las ofertas");
+                    } else {
+                        res.redirect("/listadoUsuarios");
+                    }
+                });
+            }
+        });
+    })
+
+
+
+};

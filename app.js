@@ -154,7 +154,6 @@ gestorBD.init(app,mongo);
 // Variables
 app.set('port', 8081);
     app.set('db', 'mongodb://admin:sdi1203@sdi-actividad2-1203-shard-00-00-96snv.mongodb.net:27017,sdi-actividad2-1203-shard-00-01-96snv.mongodb.net:27017,sdi-actividad2-1203-shard-00-02-96snv.mongodb.net:27017/test?ssl=true&replicaSet=sdi-actividad2-1203-shard-0&authSource=admin&retryWrites=true&w=majority');
-//app.set('db', 'mongodb://admin:sdi1203@tiendamusica-shard-00-00-96snv.mongodb.net:27017,tiendamusica-shard-00-01-96snv.mongodb.net:27017,tiendamusica-shard-00-02-96snv.mongodb.net:27017/test?ssl=true&replicaSet=tiendamusica-shard-0&authSource=admin&retryWrites=true');
 //app.set('db', 'mongodb://localhost:27017/uomusic');
 app.set('clave','abcdefg');
 app.set('crypto',crypto);
