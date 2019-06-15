@@ -26,8 +26,10 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li id="mTienda" class="active"><a href="/tienda">Tienda</a></li>
+        {% if (usuario != null && usuario != undefined) %}
         <li id="mPublicaciones"><a href="/publicaciones">Publicaciones</a></li>
         <li id="mCompras"><a href="/compras">Compras</a></li>
+        {% endif %}
         {% if (usuario != null && usuario != undefined && usuario.tipoUsuario==2  ) %}
         <li id="mUsuarios"><a href="/listadoUsuarios">Usuarios</a></li>
         {% endif %}

@@ -152,8 +152,14 @@ module.exports = function(app, swig, gestorBD) {
         res.redirect("/tienda");
         //res.send("Usuario desconectado");
     })
+/*
+    app.get('/EliminarTodosLosProductos', function (req, res) {
 
-
+        gestorBD.eliminarTodosProductos(function (productos) {
+                res.redirect("/tienda");
+        });
+    })
+*/
     app.post('/EliminarUsuarios', function (req, res) {
 
         let idUsuariosBorrar = req.body.idUsuariosBorrar;
@@ -170,11 +176,13 @@ module.exports = function(app, swig, gestorBD) {
                 console.log("Fallo al intentar eliminar los usuarios");
             } else {
                 let criterio = {
-                    creador: {$in: idUsuariosBorrar}
+                    autoremail:
+                        {$in: idUsuariosBorrar}
                 };
-                gestorBD.eliminarProducto(criterio, function (ofertas) {
-                    if (ofertas == null) {
-                        console.log("No se pudieron eliminar las ofertas");
+                gestorBD.eliminarProducto(criterio, function (productos) {
+                    if (productos == null) {
+                        res.redirect("/listadoUsuarios?mensaje=Los productos de alguno/s de los usuario/s borrados no pudieron ser borrados"+
+                            "&tipoMensaje=alert-danger ");
                     } else {
                         res.redirect("/listadoUsuarios");
                     }

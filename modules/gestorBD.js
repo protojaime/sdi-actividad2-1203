@@ -48,7 +48,7 @@ module.exports = {
             if (err) {
                 funcionCallback(null);
             } else {
-                var collection = db.collection('compras');
+                var collection = db.collection('productos');
                 collection.find(criterio).toArray(function(err, usuarios) {
                     if (err) {
                         funcionCallback(null);
@@ -77,12 +77,46 @@ module.exports = {
             }
         });
     },
+    eliminarTodosProductos: function( funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('productos');
+                collection.remove({}, function(err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
     eliminarProducto : function(criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('productos');
+                collection.remove(criterio, function(err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    eliminarCompra : function(criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('compras');
                 collection.remove(criterio, function(err, result) {
                     if (err) {
                         funcionCallback(null);
@@ -111,6 +145,29 @@ module.exports = {
             }
         });
     },
+
+
+    modificarProductoaComprado: function (criterio,criterio2, funcionCallback) {
+
+    this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+        if (err) {
+            funcionCallback(null);
+        } else {
+            let collection = db.collection('productos');
+            collection.updateOne(criterio, {
+                $set: criterio2
+            }, function (err, result) {
+                if (err) {
+                    funcionCallback(null);
+                } else {
+                    funcionCallback(result);
+                }
+                db.close();
+            });
+        }
+    });
+},
+
     obtenerUsuarios : function(criterio, funcionCallback){
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {

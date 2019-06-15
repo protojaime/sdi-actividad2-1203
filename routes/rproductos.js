@@ -1,42 +1,23 @@
 module.exports = function (app, swig, gestorBD) {
 
     app.get('/compras', function (req, res) {
-        var criterio = {"usuario": req.session.usuario};
-        gestorBD.obtenerCompras(criterio, function (compras) {
-            if (compras == null) {
-                res.send("Error al listar ");
-            } else {
-                var productosCompradasIds = [];
-                for (i = 0; i < compras.length; i++) {
-                    productosCompradasIds.push(compras[i].productoId);
-                }
-                var criterio = {"_id": {$in: productosCompradasIds}}
+        var criterio = {
+            vendido: true,
+            comprador: req.session.usuario.email
+        };
                 gestorBD.obtenerProductos(criterio, function (productos) {
                     var respuesta = swig.renderFile('views/bcompras.html',
                         {
                             usuario: req.session.usuario,
+                            cartera:  req.session.usuario.cartera,
                             productos: productos
                         });
                     res.send(respuesta);
                 });
-            }
-        });
+
+
     });
 
-    app.get('/producto/comprar/:id', function (req, res) {
-        var productoId = gestorBD.mongo.ObjectID(req.params.id);
-        var compra = {
-            usuario: req.session.usuario,
-            productoId: productoId
-        }
-        gestorBD.insertarCompra(compra, function (idCompra) {
-            if (idCompra == null) {
-                res.send(respuesta);
-            } else {
-                res.redirect("/compras");
-            }
-        });
-    });
 
 
     app.get('/producto/eliminar/:id', function (req, res) {
@@ -112,7 +93,10 @@ module.exports = function (app, swig, gestorBD) {
             descripcion: req.body.descripcion,
             fecha: req.body.fecha,
             precio: req.body.precio,
-            autor: req.session.usuario
+            vendido: false,
+            autor: req.session.usuario,
+            autoremail: req.session.usuario.email,
+            comprador: null
         }
         // Conectarse
         gestorBD.insertarProducto(producto, function (id) {
@@ -147,15 +131,60 @@ module.exports = function (app, swig, gestorBD) {
                 }
             }
             */
-
-
-
         });
     });
 
-    app.get('/promo*', function (req, res) {
-        res.send('Respuesta patrón promo* ');
-    })
+    app.get('/producto/comprar/:id', function (req, res) {
+     //   console.log("test");
+        var criterio = {_id: gestorBD.mongo.ObjectID(req.params.id)};
+     //   console.log(req.params.id);
+        gestorBD.obtenerProductos(criterio, function (productos) {
+            if (productos != null && productos != undefined && productos.length != 0) {
+                if (productos[0].precio <= req.session.usuario.cartera) {
+                    var criterio2 = {
+                        vendido: true,
+                        comprador: req.session.usuario.email
+                    };
+                    gestorBD.modificarProductoaComprado(criterio,criterio2, function (productosModificados) {
+                        if (productosModificados != null && productosModificados.modifiedCount != 0) {
+                            var criterio2 = {
+                                email: req.session.usuario.email
+                            };
+                            var criterio3 = {
+                                cartera: req.session.usuario.cartera - productos[0].precio
+                            };
+                        //    console.log(req.session.usuario.cartera);
+                        //    console.log(productos[0].precio);
+                            gestorBD.actualizaCartera(criterio2, criterio3, function (usuariosModificados) {
+                                if (usuariosModificados != null && usuariosModificados.modifiedCount != 0) {
+                                            req.session.usuario.cartera=req.session.usuario.cartera - productos[0].precio;
+                                            res.redirect("/compras?mensaje=el producto se compró correctamente");
+                                } else {
+                                    res.redirect("/tienda?mensaje=la cartera no pudo actualizarse correctamente" +
+                                        "&tipoMensaje=alert-danger");
+                                }
+                            })
+                        } else {
+                            res.redirect("/tienda?mensaje=el producto no pudo comprarse correctamente"+
+                                "&tipoMensaje=alert-danger");
+                        }
+                    });
+                } else {
+                    res.redirect("/tienda?mensaje=No tienes suficiente dinero en tu cartera para adquirir este producto" +
+                        "&tipoMensaje=alert-danger ");
+                }
+            } else {
+                res.redirect("/tienda?mensaje=La compra no pudo completarse" +
+                    "&tipoMensaje=alert-danger ");
+            }
+        })
+    });
+
+
+
+/*
+
+
 
     app.get("/productos", function (req, res) {
         var productos = [
@@ -177,6 +206,9 @@ module.exports = function (app, swig, gestorBD) {
 
         res.send(respuesta);
     });
+
+
+ */
 
     app.get("/tienda", function (req, res) {
         var criterio = {};

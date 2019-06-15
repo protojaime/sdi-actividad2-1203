@@ -6,10 +6,10 @@
 <div class="row">
 	<div class="media col-xs-10">
 		<div class="media-body">
-			<h2>Titulo de la producto</h2>
-			<p>nombre</p>
-			<p>descripcion</p>
-            <p>fecha</p>
+			<h2>Detalles del producto: </h2>
+			<p>nombre: {{ producto.nombre }}</p>
+			<p>descripcion: {{ producto.descripcion }}</p>
+            <p>fecha: {{ producto.fecha }}</p>
 
             <a class="btn btn-primary pull-right"
                href="/producto/comprar/{{producto._id.toString()}}">{{ producto.precio
