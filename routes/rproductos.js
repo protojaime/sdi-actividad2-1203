@@ -14,6 +14,7 @@ module.exports = function (app, swig, gestorBD) {
                 gestorBD.obtenerProductos(criterio, function (productos) {
                     var respuesta = swig.renderFile('views/bcompras.html',
                         {
+                            usuario: req.session.usuario,
                             productos: productos
                         });
                     res.send(respuesta);
@@ -51,7 +52,9 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/productos/agregar', function (req, res) {
 
-        var respuesta = swig.renderFile('views/bagregar.html', {});
+        var respuesta = swig.renderFile('views/bagregar.html', {
+            usuario: req.session.usuario
+        });
         res.send(respuesta);
     })
 
@@ -82,6 +85,7 @@ module.exports = function (app, swig, gestorBD) {
                     productos[0].usd = cambioUSD * productos[0].precio;
                     var respuesta = swig.renderFile('views/bproducto.html',
                         {
+                            usuario: req.session.usuario,
                             producto: productos[0]
                         });
                     res.send(respuesta);
@@ -166,6 +170,7 @@ module.exports = function (app, swig, gestorBD) {
                 "fecha": "11/08/11",
                 "precio": "1.1"}];
         var respuesta = swig.renderFile('views/btienda.html', {
+            usuario: req.session.usuario,
             vendedor: 'Tienda de productos',
             productos: productos
         });
@@ -201,6 +206,7 @@ module.exports = function (app, swig, gestorBD) {
                 }
                 var respuesta = swig.renderFile('views/btienda.html',
                     {
+                        usuario: req.session.usuario,
                         productos: productos,
                         paginas: paginas,
                         actual: pg
@@ -219,6 +225,7 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 var respuesta = swig.renderFile('views/bpublicaciones.html',
                     {
+                        usuario: req.session.usuario,
                         productos: productos
                     });
                 res.send(respuesta);
@@ -234,6 +241,7 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 var respuesta = swig.renderFile('views/bproductoModificar.html',
                     {
+                        usuario: req.session.usuario,
                         producto: productos[0]
                     });
                 res.send(respuesta);

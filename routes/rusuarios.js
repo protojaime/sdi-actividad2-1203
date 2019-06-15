@@ -4,7 +4,9 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.get("/registrarse", function(req, res) {
-        var respuesta = swig.renderFile('views/bregistro.html', {});
+        var respuesta = swig.renderFile('views/bregistro.html', {
+            usuario: req.session.usuario
+        });
         res.send(respuesta);
     });
 
@@ -15,6 +17,7 @@ module.exports = function(app, swig, gestorBD) {
             nombre : req.body.nombre,
             apellidos : req.body.apellidos,
             email : req.body.email,
+            cartera: 100,
             password : seguro
         }
 
@@ -38,9 +41,59 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.get("/identificarse", function(req, res) {
-        var respuesta = swig.renderFile('views/bidentificacion.html', {});
+        var respuesta = swig.renderFile('views/bidentificacion.html', {
+            usuario: req.session.usuario,
+        });
         res.send(respuesta);
     });
+
+    app.post("/identificarse", function (req, res) {
+            let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+                .update(req.body.password).digest('hex');
+            let criterio = {
+                email: req.body.email,
+                password: seguro
+            };
+            gestorBD.obtenerUsuarios(criterio, function (usuarios) {
+                    if (usuarios === undefined || usuarios.length === 0) {
+                        req.session.usuario = undefined;
+                        res.redirect("/identificarse" +
+                            "?mensaje=Email o password incorrecto" +
+                            "&tipoMensaje=alert-danger ");
+                        app.get("logger").error('Email o password incorrecto');
+                    } else {
+                        req.session.usuario = usuarios[0];
+                        console.log('usuario ' + req.session.usuario.email + "logueado");
+                        delete req.session.usuario.password;
+                     //   if (usuarios[0].rol == 'admin')
+                        var respuesta = swig.renderFile('views/btienda.html', {
+                            usuario: req.session.usuario
+                        });
+                        res.send(respuesta);
+
+                    }
+                }
+            );
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     app.get("/listadoUsuarios", function(req, res) {
         /*metodo para listado*/
         let criterio = {
@@ -63,6 +116,7 @@ module.exports = function(app, swig, gestorBD) {
             } else {
                 var respuesta = swig.renderFile('views/blistadoUsuarios.html',
                     {
+                        usuario: req.session.usuario,
                         usuarios: usuarios
                     });
                 res.send(respuesta);

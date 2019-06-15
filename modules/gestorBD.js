@@ -178,5 +178,26 @@ module.exports = {
                 });
             }
         });
+    },
+    actualizaCartera: function (criterio, criterio2, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('usuarios');
+                collection.updateOne(criterio, {
+                    $set: criterio2
+                }, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result);
+                    }
+                    db.close();
+                });
+            }
+        });
     }
+
+
 };
