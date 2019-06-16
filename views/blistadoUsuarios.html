@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block titulo %}  Usuarios {% endblock %}
+
+{% block contenido_principal %}
+<h2>Usuarios</h2>
+<form method="post" action="/EliminarUsuarios">
+<div class="table-responsive">
+    <table class="table table-hover">
+        <input class="btn" type="submit" id="BotonBorrarUsuarios"
+                   value="Eliminar los Usuarios seleccionados"/></th>
+
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.apellidos }}</td>
+            <td>{{ usuario.email }}</td>
+            <td><input type="checkbox" name="idUsuariosBorrar"  id="idUsuariosBorrar"  value='{{usuario.email}}'></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

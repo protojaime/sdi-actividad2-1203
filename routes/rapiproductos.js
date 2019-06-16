@@ -29,7 +29,7 @@ module.exports = function (app, gestorBD) {
     });
 
     app.get("/api/producto", function (req, res) {
-        gestorBD.obtenerCanciones({}, function (productos) {
+        gestorBD.obtenerProductos({}, function (productos) {
             if (productos == null) {
                 res.status(500);
                 res.json({
@@ -49,7 +49,7 @@ module.exports = function (app, gestorBD) {
             fecha: req.body.fecha,
             precio: req.body.precio,
         }
-        gestorBD.insertarCancion(producto, function (id) {
+        gestorBD.insertarProducto(producto, function (id) {
             if (id == null) {
                 res.status(500);
                 res.json({
@@ -58,7 +58,7 @@ module.exports = function (app, gestorBD) {
             } else {
                 res.status(201);
                 res.json({
-                    mensaje: "canción insertarda",
+                    mensaje: "producto insertarda",
                     _id: id
                 })
             }
@@ -68,7 +68,7 @@ module.exports = function (app, gestorBD) {
     app.get("/api/producto/:id", function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
 
-        gestorBD.obtenerCanciones(criterio, function (productos) {
+        gestorBD.obtenerProductos(criterio, function (productos) {
             if (productos == null) {
                 res.status(500);
                 res.json({
@@ -85,7 +85,7 @@ module.exports = function (app, gestorBD) {
     app.delete("/api/producto/:id", function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
 
-        gestorBD.eliminarCancion(criterio, function (productos) {
+        gestorBD.eliminarProducto(criterio, function (productos) {
             if (productos == null) {
                 res.status(500);
                 res.json({
@@ -111,7 +111,7 @@ module.exports = function (app, gestorBD) {
             fecha: req.body.fecha;
         if (req.body.precio != null)
             producto.precio = req.body.precio;
-        gestorBD.modificarCancion(criterio, producto, function (result) {
+        gestorBD.modificarProducto(criterio, producto, function (result) {
             if (result == null) {
                 res.status(500);
                 res.json({
@@ -120,7 +120,7 @@ module.exports = function (app, gestorBD) {
             } else {
                 res.status(200);
                 res.json({
-                    mensaje: "canción modificada",
+                    mensaje: "producto modificada",
                     _id: req.params.id
                 })
             }

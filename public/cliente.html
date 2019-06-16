@@ -23,7 +23,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav" id="barra-menu">
-        <li><a onclick=widgetCanciones()>Canciones</a></li>
+        <li><a onclick=widgetProductos()>Productos</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right" id="barra-menu-derecha">
         <!-- Opciones de menú aqui -->
@@ -45,29 +45,29 @@
   $( "#contenedor-principal" ).load( "widget-login.html");
   if ( Cookies.get('token') != null ){
     token = Cookies.get('token');
-    $( "#contenedor-principal" ).load( "widget-canciones.html");
+    $( "#contenedor-principal" ).load( "widget-productos.html");
   }
   var url = new URL(window.location.href);
   var w = url.searchParams.get("w");
   if ( w == "login"){
     $( "#contenedor-principal" ).load("widget-login.html");
   }
-  if ( w == "canciones"){
-    $( "#contenedor-principal" ).load("widget-canciones.html");
+  if ( w == "productos"){
+    $( "#contenedor-principal" ).load("widget-productos.html");
   }
-  function widgetCanciones(){
-    $( "#contenedor-principal" ).load( "widget-canciones.html");
+  function widgetProductos(){
+    $( "#contenedor-principal" ).load( "widget-productos.html");
   }
   function eliminar( _id ) {
     $.ajax({
-      url: URLbase + "/cancion/"+_id,
+      url: URLbase + "/producto/"+_id,
       type: "DELETE",
       data: { },
       dataType: 'json',
       headers: { "token": token },
       success: function(respuesta) {
         console.log("Eliminada: "+_id);
-        $( "#"+_id ).remove(); // eliminar el <tr> de la canción
+        $( "#"+_id ).remove(); // eliminar el <tr> de la producto
       },
       error : function (error){
         $( "#contenedor-principal" ).load("widget-login.html");
@@ -75,7 +75,7 @@
     });
   }
   function detalles(_id) {
-    idCancionSeleccionada = _id;
+    idProductoSeleccionada = _id;
     $( "#contenedor-principal" ).load( "widget-detalles.html");
   }
 </script>
