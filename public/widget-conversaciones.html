@@ -1,0 +1,42 @@
+<div id="widget-conversaciones">
+    <h2>Conversacion</h2>
+    <div id="detallesConversacion" class="row">
+
+    </div>
+    <div id="AreaMensajes" class="row">
+
+    </div>
+    <div>
+        <input id="contenidoMensaje" type="text" class="form-control"
+               placeholder="Escriba un mensaje" name="contenidoMensaje"/>
+        <span>
+            <button id="BottonEnviar" class="btn btn-primary">
+                <span>Enviar Mensaje</span>
+            </button>
+        </span>
+    </div>
+</div>
+<script>
+
+
+
+
+    function actualizarTabla(productosMostrar) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        for (i = 0; i < productosMostrar.length; i++) {
+            $("#tablaCuerpo").append(
+                "<tr id=" + productosMostrar[i]._id + ">" +
+                "<td>" + productosMostrar[i].nombre + "</td>" +
+                "<td>" + productosMostrar[i].descripcion + "</td>" +
+                "<td>" + productosMostrar[i].fecha + "</td>" +
+                "<td>" + productosMostrar[i].precio + "</td>" +
+                "<td>" +
+                "<a onclick=detalles('" + productosMostrar[i]._id + "')>Detalles</a><br>" +
+                "<a onclick=enviarMensaje('" + productosMostrar[i]._id + "')>Enviar Mensaje</a>" +
+                "</td>" +
+                "</tr>");
+            // Mucho cuidado con las comillas del eliminarProducto
+            //la id tiene que ir entre comillas ' '
+        }
+    }
+</script>

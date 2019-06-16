@@ -17,9 +17,9 @@ app.use(function(req, res, next) {
 let log4js = require('log4js');
 log4js.configure({
     appenders: {myWallapop: {type: 'file', filename: 'logs/AppLogs.log'}},
-    categories: {default: {appenders: ['app'], level: 'trace'}}
+    categories: {default: {appenders: ['myWallapop'], level: 'trace'}}
 });
-let logger = log4js.getLogger('app');
+let logger = log4js.getLogger('myWallapop');
 app.set('logger', logger);
 
 var jwt = require('jsonwebtoken');
@@ -173,6 +173,7 @@ app.set('crypto',crypto);
 require("./routes/rusuarios.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
 require("./routes/rproductos.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
 require("./routes/rapiproductos.js")(app, gestorBD);
+require("./routes/rapiconversaciones.js")(app, gestorBD);
 
 app.get('/', function (req, res) {
     res.redirect('/tienda');
