@@ -97,6 +97,8 @@ module.exports = function (app, gestorBD) {
     });
 
 
+
+
     app.delete("/api/producto/:id", function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
 

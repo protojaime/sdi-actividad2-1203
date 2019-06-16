@@ -2,7 +2,7 @@
     <input type="text" class="form-control" placeholder="Filtrar por nombre"
            id="filtro-nombre"/>
     <button class="btn" onclick="cargarProductos()">Actualizar</button>
-    <button class="btn btn-primary" onclick="widgetAgregar()">Nueva Producto</button>
+    <button class="btn btn-primary" onclick="widgetAgregar()">Nuevo Producto</button>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -28,7 +28,9 @@
             type: "GET",
             data: {},
             dataType: 'json',
-            headers: {"token": token},
+            headers: {"token": token,
+                email: Cookies.get('email'),
+            },
             success: function (respuesta) {
                 productos = respuesta;
                 actualizarTabla(productos);
@@ -49,28 +51,63 @@
                 "<td>" + productosMostrar[i].precio + "</td>" +
                 "<td>" +
                 "<a onclick=detalles('" + productosMostrar[i]._id + "')>Detalles</a><br>" +
-                "<a onclick=eliminar('" + productosMostrar[i]._id + "')>Eliminar</a>" +
+                "<a onclick=enviarMensaje('" + productosMostrar[i]._id + "')>Mensajear</a><br>" +
                 "</td>" +
                 "</tr>");
             // Mucho cuidado con las comillas del eliminarProducto
             //la id tiene que ir entre comillas ' '
         }
     }
-    function eliminar(_id) {
+    /*
+
+
+      function eliminar(_id) {
+          $.ajax({
+              url: URLbase + "/producto/" + _id,
+              type: "DELETE",
+              data: {},
+              dataType: 'json',
+              headers: {"token": token},
+              success: function (respuesta) {
+                  console.log("Eliminada: " + _id);
+                  $("#" + _id).remove(); // eliminar el <tr> de la producto
+              },
+              error: function (error) {
+                  $("#contenedor-principal").load("widget-login.html");
+              }
+          });
+      }
+
+       */
+
+
+    function enviarMensaje(_id) {
         $.ajax({
-            url: URLbase + "/producto/" + _id,
-            type: "DELETE",
+            url: URLbase + "/producto/conversacion/" + _id,
+            type: "GET",
             data: {},
             dataType: 'json',
-            headers: {"token": token},
+            headers: {
+                "token": token,
+                email: Cookies.get('email'),
+            },
             success: function (respuesta) {
-                console.log("Eliminada: " + _id);
-                $("#" + _id).remove(); // eliminar el <tr> de la producto
+                $("#contenedor-principal").load("widget-conversaciones.html");
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
             }
         });
+
+    }
+
+
+
+
+    cargarProductos();
+    function detalles(_id) {
+        idProductoSeleccionada = _id;
+        $("#contenedor-principal").load("widget-detalles.html");
     }
     cargarProductos();
     function detalles(_id) {

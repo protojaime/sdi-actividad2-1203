@@ -173,6 +173,7 @@ app.set('crypto',crypto);
 require("./routes/rusuarios.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
 require("./routes/rproductos.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
 require("./routes/rapiproductos.js")(app, gestorBD);
+require("./routes/rapiconversaciones.js")(app, gestorBD);
 
 app.get('/', function (req, res) {
     res.redirect('/tienda');
