@@ -7,7 +7,8 @@
         <thead>
         <tr>
             <th><a onclick="ordenarPorNombre()">Nombre</a></th>
-            <th>Genero</th>
+            <th>descripcion</th>
+            <th>fecha</th>
             <th><a onclick="ordenarPorPrecio()">Precio</a></th>
             <th class="col-md-1"></th>
         </tr>
@@ -23,7 +24,7 @@
     var productos;
     function cargarProductos() {
         $.ajax({
-            url: URLbase + "/producto",
+            url: URLbase + "/producto/",
             type: "GET",
             data: {},
             dataType: 'json',
@@ -43,7 +44,8 @@
             $("#tablaCuerpo").append(
                 "<tr id=" + productosMostrar[i]._id + ">" +
                 "<td>" + productosMostrar[i].nombre + "</td>" +
-                "<td>" + productosMostrar[i].genero + "</td>" +
+                "<td>" + productosMostrar[i].descripcion + "</td>" +
+                "<td>" + productosMostrar[i].fecha + "</td>" +
                 "<td>" + productosMostrar[i].precio + "</td>" +
                 "<td>" +
                 "<a onclick=detalles('" + productosMostrar[i]._id + "')>Detalles</a><br>" +

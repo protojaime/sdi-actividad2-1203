@@ -7,12 +7,21 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="agregar-genero">Genero:</label>
+        <label class="control-label col-sm-2" for="agregar-descripcion">Descripcion:</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="agregar-genero"
-                   placeholder="Nombre de mi producto" id="agregar-genero" />
+            <input type="text" class="form-control" name="agregar-descripcion"
+                   placeholder="Nombre de mi producto" id="agregar-descripcion" />
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="agregar-fecha">Fecha:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="agregar-fecha"
+                   placeholder="Nombre de mi producto" id="agregar-fecha" />
+        </div>
+    </div>
+
     <div class="form-group">
         <label class="control-label col-sm-2" for="agregar-precio">Precio (€):</label>
         <div class="col-sm-10">
@@ -29,11 +38,12 @@
 <script>
     function agregarProducto( ) {
         $.ajax({
-            url: URLbase + "/producto",
+            url: URLbase + "/producto/",
             type: "POST",
             data: {
                 nombre : $("#agregar-nombre").val(),
-                genero : $("#agregar-genero").val(),
+                descripcion : $("#agregar-descripcion").val(),
+                fecha : $("#agregar-fecha").val(),
                 precio : $("#agregar-precio").val()
             },
             dataType: 'json',

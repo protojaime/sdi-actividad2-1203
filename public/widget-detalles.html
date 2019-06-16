@@ -7,10 +7,17 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="detalles-genero">Genero:</label>
+        <label class="control-label col-sm-2" for="detalles-descripcion">Descripcion:</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="detalles-genero"
-                   placeholder="Nombre de mi producto" id="detalles-genero" readonly/>
+            <input type="text" class="form-control" name="detalles-descripcion"
+                   placeholder="Nombre de mi producto" id="detalles-descripcion" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="detalles-fecha">Fecha:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="detalles-fecha"
+                   placeholder="Nombre de mi producto" id="detalles-fecha" readonly/>
         </div>
     </div>
     <div class="form-group">
@@ -33,7 +40,8 @@
         },
         success : function(producto) {
             $("#detalles-nombre").val(producto.nombre);
-            $("#detalles-genero").val(producto.genero);
+            $("#detalles-descripcion").val(producto.descripcion);
+            $("#detalles-fecha").val(producto.fecha);
             $("#detalles-precio").val(producto.precio);
         },
         error : function(error) {
