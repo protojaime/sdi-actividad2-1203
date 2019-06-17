@@ -59,6 +59,9 @@ app.use("/publicaciones",routerUsuarioSession);
 app.use("/producto/comprar",routerUsuarioSession);
 app.use("/compras",routerUsuarioSession);
 
+
+
+/*
 //routerAudios
 var routerAudios = express.Router();
 routerAudios.use(function(req, res, next) {
@@ -89,6 +92,8 @@ routerAudios.use(function(req, res, next) {
 //Aplicar routerAudios
 app.use("/audios/",routerAudios);
 
+
+ */
 //routerUsuarioAutor
 var routerUsuarioAutor = express.Router();
 routerUsuarioAutor.use(function(req, res, next) {
@@ -109,6 +114,7 @@ routerUsuarioAutor.use(function(req, res, next) {
 //Aplicar routerUsuarioAutor
 app.use("/producto/modificar",routerUsuarioAutor);
 app.use("/producto/eliminar",routerUsuarioAutor);
+
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -148,6 +154,10 @@ routerUsuarioToken.use(function(req, res, next) {
 });
 // Aplicar routerUsuarioToken
 app.use('/api/producto', routerUsuarioToken);
+app.use("/api/conversacion",routerUsuarioToken);
+app.use("/api/producto/conversacion",routerUsuarioToken);
+app.use("/api/insertamensaje/conversacion",routerUsuarioToken);
+
 
 var swig = require('swig');
 

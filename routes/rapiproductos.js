@@ -4,10 +4,12 @@ module.exports = function (app, gestorBD) {
 
 
     app.get("/api/producto/", function (req, res) {
+        console.log("correo: "+req.headers['email']);
+
+
+
         let criterio = {
-            autoremail: {
-                $ne: res.email
-            }
+            autoremail: {$ne: req.headers['email']}
         };
         gestorBD.obtenerProductos(criterio, function (productos) {
             if (productos == null) {

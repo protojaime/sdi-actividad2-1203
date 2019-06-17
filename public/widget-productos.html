@@ -90,17 +90,40 @@
             headers: {
                 "token": token,
                 email: Cookies.get('email'),
+                id: _id,
             },
             success: function (respuesta) {
-                $("#contenedor-principal").load("widget-conversaciones.html");
+
+                $.ajax({
+                    url: URLbase + "/conversacion/" + respuesta.toString(),
+                    type: "GET",
+                    data: {},
+                    dataType: 'json',
+                    headers: {
+                        "token": token,
+                        email: Cookies.get('email'),
+                        id: respuesta.toString(),
+                    },
+                    success: function (respuesta2) {
+
+                        Cookies.set('conversacion',respuesta2[0]);
+                        $("#contenedor-principal").load("widget-conversaciones.html");
+
+
+                    }, error: function (error2) {
+                        alert('Error al intentar entrar en la conversacion');
+                        $("#contenedor-principal").load("widget-login.html");
+                    }
+                });
             },
-            error: function (error) {
-                $("#contenedor-principal").load("widget-login.html");
-            }
-        });
+                    error: function (error) {
+                        alert('Error al intentar encontrar la conversacion');
+                        $("#contenedor-principal").load("widget-login.html");
+                    }
+                });
 
-    }
 
+        }
 
 
 

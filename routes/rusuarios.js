@@ -159,7 +159,25 @@ module.exports = function(app, swig, gestorBD) {
                 res.redirect("/tienda");
         });
     })
+
+app.get('/eliminarTodosConversaciones', function (req, res) {
+
+        gestorBD.eliminarTodosConversaciones(function (productos) {
+        });
+    })
+
+
+
+
 */
+
+
+
+
+
+
+
+
     app.post('/EliminarUsuarios', function (req, res) {
 
         let idUsuariosBorrar = req.body.idUsuariosBorrar;

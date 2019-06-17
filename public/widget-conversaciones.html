@@ -3,40 +3,148 @@
     <div id="detallesConversacion" class="row">
 
     </div>
-    <div id="AreaMensajes" class="row">
+    <table class="table table-hover">
+    <tbody id="AreaMensajes">
+    <tr>
+    <th>autor</th>
+        <th>fecha</th>
+    <th>contenido</th>
+    </tr>
+    </tbody>
+    </table>
 
-    </div>
     <div>
         <input id="contenidoMensaje" type="text" class="form-control"
                placeholder="Escriba un mensaje" name="contenidoMensaje"/>
         <span>
-            <button id="BottonEnviar" class="btn btn-primary">
+            <button id="BottonEnviar" class="btn btn-primary" onclick="EnviarMensaje()">
                 <span>Enviar Mensaje</span>
             </button>
+
         </span>
     </div>
 </div>
 <script>
+var conver=JSON.parse(Cookies.get('conversacion'));
+alert(JSON.stringify(conver));
+
+    window.history.pushState("", "", "/cliente.html?w=conversacion");
+//alert(Cookies.get('email'));
 
 
+    function EnviarMensaje() {
+        try{
+        var id=conver._id;
+       // let mensaje =JSON.parse('{"autoremail": "'+Cookies.get('email')+'", "fecha":"'+Date.now()+'","contenido":"'+$("#contenidoMensaje").val()+'"}');
+        //alert(JSON.stringify(mensaje));
+            var mensaje = '{"conversacionid":"'+id+'", "destinatarioemail":"'+productos[0].autoremail+'", "autoremail": "'+Cookies.get('email')+'", "fecha":"'+Date.now()+'", "contenido": "'+$("#contenidoMensaje").val()+'"}';
 
 
-    function actualizarTabla(productosMostrar) {
-        $("#tablaCuerpo").empty(); // Vaciar la tabla
-        for (i = 0; i < productosMostrar.length; i++) {
-            $("#tablaCuerpo").append(
-                "<tr id=" + productosMostrar[i]._id + ">" +
-                "<td>" + productosMostrar[i].nombre + "</td>" +
-                "<td>" + productosMostrar[i].descripcion + "</td>" +
-                "<td>" + productosMostrar[i].fecha + "</td>" +
-                "<td>" + productosMostrar[i].precio + "</td>" +
-                "<td>" +
-                "<a onclick=detalles('" + productosMostrar[i]._id + "')>Detalles</a><br>" +
-                "<a onclick=enviarMensaje('" + productosMostrar[i]._id + "')>Enviar Mensaje</a>" +
-                "</td>" +
-                "</tr>");
-            // Mucho cuidado con las comillas del eliminarProducto
-            //la id tiene que ir entre comillas ' '
+            $.ajax({
+            url: URLbase + "/insertamensaje/conversacion/"+id,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token,
+                email: Cookies.get('email'),
+                id: id,
+                mensaje:  mensaje,
+            },
+            success: function (respuesta) {
+               // actualizarTablaZero(conver);
+                alert(JSON.stringify(respuesta));
+                actualizarTabla();
+
+            },
+            error: function (error) {
+                alert("error al intentar insertar mensaje");
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }  catch(err){
+    alert(err);
+}
+    }
+    function actualizarTablaZero(conver) {
+        try{
+        $.ajax({
+            url: URLbase + "/conversacion/"+conver._id,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token,
+                email: Cookies.get('email'),
+            },
+            success: function (respuesta) {
+                conver=JSON.parse(respuesta);
+              //  actualizarTabla(conver);
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }  catch(err){
+    alert(err);
+}
+    }
+    function actualizarDetallesConversacion(conversacionMostrar) {
+        try{
+        $("#detallesConversacion").empty(); // Vaciar la tabla
+        $("#detallesConversacion").append(
+            "<h3> Conversacion con el propietario de producto " + conversacionMostrar.productoid +
+            "" +
+            "</h3>");
+    }  catch(err){
+                alert(err);
         }
     }
+
+    function actualizarTabla() {
+        try {
+            $.ajax({
+                url: URLbase + "/mensajes/conversacion/" + conver._id,
+                type: "GET",
+                data: {},
+                dataType: 'json',
+                headers: {
+                    "token": token,
+                    email: Cookies.get('email'),
+                },
+                success: function (respuesta) {
+                    try {
+                     //   alert("numero de mensajes: "+respuesta.length);
+                    $("#AreaMensajes").empty(); // Vaciar la tabla
+                    for (i = 0; i < respuesta.length; i++) {
+                     //   alert("mensaje: "+JSON.stringify(respuesta[i]));
+                     var mensaje =respuesta[i];
+
+                        $("#AreaMensajes").append(
+                            "<tr id=" + mensaje._id +">" +
+                            "<td>" + mensaje['autoremail'] + "</td>" +
+                            "<td>"+ mensaje.fecha + "</td>" +
+                            "<td><p>" + mensaje.contenido + "</p></td>" +
+                            "</tr>");
+                    }
+                } catch(err){
+                    alert(err);
+                }
+
+                }, error: function (error) {
+                    alert("error: "+error.toString());
+                    $("#contenedor-principal").load("widget-login.html");
+                }
+
+            });
+        } catch(err){
+    alert(err);
+}}
+try{
+    actualizarDetallesConversacion(conver);
+actualizarTablaZero(conver);
+    actualizarTabla();
+//actualizamos mensajes cada 15 segundos
+    setInterval(actualizarTabla(), 15000);
+}  catch(err){
+    alert(err);
+}
 </script>
