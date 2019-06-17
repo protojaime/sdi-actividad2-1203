@@ -64,6 +64,7 @@ module.exports = function(app, swig, gestorBD) {
                             "?mensaje=Email o password incorrecto" +
                             "&tipoMensaje=alert-danger ");
                         console.log('Email o password incorrecto');
+                        app.get("logger").error('Email o password incorrecto');
                     } else {
                         req.session.usuario = usuarios[0];
                         console.log('usuario ' + req.session.usuario.email + "logueado");
@@ -192,6 +193,7 @@ app.get('/eliminarTodosConversaciones', function (req, res) {
         gestorBD.eliminarUsuarios(criterio, function (usuarios) {
             if (usuarios == null) {
                 console.log("Fallo al intentar eliminar los usuarios");
+                app.get("logger").error("Fallo al intentar eliminar los usuarios");
             } else {
                 let criterio = {
                     autoremail:

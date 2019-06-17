@@ -36,6 +36,8 @@ module.exports = function (app, gestorBD) {
                             if (conversacionid == null || conversacionid == undefined ) {
                                 res.status(500);
                                 console.log("no se pudo comenzar la conversacion");
+                                app.get("logger").error("no se pudo comenzar la conversacion");
+
                                 res.json({
                                     error: "no se pudo comenzar la conversacion"
                                 })
@@ -106,6 +108,7 @@ module.exports = function (app, gestorBD) {
             if (conversaciones == null || conversaciones == undefined) {
                 res.status(500);
                 console.log("no se pudo insertar el mensaje");
+                app.get("logger").error("no se pudo insertar el mensaje");
                 res.json({
                     error: "no se pudo insertar el mensaje"
                 })

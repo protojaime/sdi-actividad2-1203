@@ -8,6 +8,7 @@ module.exports = {
     obtenerProductosPg : function(criterio,pg,funcionCallback){
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('productos');
@@ -15,6 +16,7 @@ module.exports = {
                     collection.find(criterio).skip( (pg-1)*5 ).limit( 5 )
                         .toArray(function(err, productos) {
                             if (err) {
+                                app.get("logger").error(err.toString());
                                 funcionCallback(null);
                             } else {
                                 funcionCallback(productos, count);
@@ -29,11 +31,13 @@ module.exports = {
     eliminarUsuarios: function (criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('usuarios');
                 collection.removeMany(criterio, function (err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);
@@ -46,11 +50,13 @@ module.exports = {
     obtenerCompras : function(criterio,funcionCallback){
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('productos');
                 collection.find(criterio).toArray(function(err, usuarios) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(usuarios);
@@ -70,11 +76,13 @@ module.exports = {
     insertarCompra: function(compra, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('compras');
                 collection.insert(compra, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result.ops[0]._id);
@@ -87,11 +95,13 @@ module.exports = {
     eliminarTodosProductos: function( funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('productos');
                 collection.remove({}, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);
@@ -126,6 +136,7 @@ module.exports = {
                 var collection = db.collection('productos');
                 collection.remove(criterio, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);
@@ -138,11 +149,13 @@ module.exports = {
     eliminarCompra : function(criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('compras');
                 collection.remove(criterio, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);
@@ -160,6 +173,7 @@ module.exports = {
                 var collection = db.collection('productos');
                 collection.update(criterio, {$set: producto}, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);
@@ -182,6 +196,7 @@ module.exports = {
                 $set: criterio2
             }, function (err, result) {
                 if (err) {
+                    app.get("logger").error(err.toString());
                     funcionCallback(null);
                 } else {
                     funcionCallback(result);
@@ -195,11 +210,13 @@ module.exports = {
     obtenerUsuarios : function(criterio, funcionCallback){
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('usuarios');
                 collection.find(criterio).toArray(function(err, usuarios) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(usuarios);
@@ -212,11 +229,13 @@ module.exports = {
     insertarUsuario : function(usuario, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
+                app.get("logger").error(err.toString());
                 funcionCallback(null);
             } else {
                 var collection = db.collection('usuarios');
                 collection.insert(usuario, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result.ops[0]._id);

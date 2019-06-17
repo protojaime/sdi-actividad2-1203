@@ -35,12 +35,15 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
                 console.log("autenificacion no correcta");
+                app.get("logger").error("autenificacion no correcta");
                 res.status(401); // Unauthorized
                 res.json({
                     autenticado: false
                 })
             } else {
                 console.log("autenificacion correcta");
+                app.get("logger").info("autenificacion correcta");
+
                 var token = app.get('jwt').sign(
                     {usuario: criterio.email, tiempo: Date.now() / 1000},
                     "secreto");
@@ -70,14 +73,16 @@ module.exports = function (app, gestorBD) {
                 res.json({
                     error: "se ha producido un error"
                 })
-                console.log("se ha producido un error insertando prodcuto desde la api")
+                console.log("se ha producido un error insertando prodcuto desde la api");
+                app.get("logger").error("se ha producido un error insertando prodcuto desde la api");
             } else {
                 res.status(201);
                 res.json({
                     mensaje: "producto insertado",
                     _id: id
                 })
-                console.log("producto insertado desde la api")
+                console.log("producto insertado desde la api");
+                app.get("logger").info("producto insertado desde la api");
             }
         });
     });
