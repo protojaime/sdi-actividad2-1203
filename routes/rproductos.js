@@ -26,7 +26,7 @@ module.exports = function (app, swig, gestorBD) {
             if (productos == null) {
                 res.send(respuesta);
             } else {
-                res.redirect("/publicaciones");
+                res.redirect("/publicaciones?mensaje=el producto se borro correctamente");
             }
         });
     })
@@ -103,7 +103,7 @@ module.exports = function (app, swig, gestorBD) {
             if (id == null) {
                 res.send("Error al insertar producto");
             }else {
-                res.redirect("/publicaciones");
+                res.redirect("/publicaciones?mensaje=el producto se inserto correctamente");
             }
 
 
@@ -250,7 +250,7 @@ module.exports = function (app, swig, gestorBD) {
 
 
     app.get("/publicaciones", function (req, res) {
-        var criterio = {autor: req.session.usuario};
+        var criterio = {autoremail: req.session.usuario.email};
         gestorBD.obtenerProductos(criterio, function (productos) {
             if (productos == null) {
                 res.send("Error al listar ");

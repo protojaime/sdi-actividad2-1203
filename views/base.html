@@ -36,13 +36,13 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if (usuario == null || usuario == undefined) %}
-        <li><a href="/registrarse"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>
-        <li><a href="/identificarse"><span class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
+        <li><a  href="/registrarse"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>
+        <li><a  href="/identificarse"><span class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
         {% endif %}
         {% if (usuario != null && usuario != undefined)%}
         <li id="cartera"><a type="text" href="#">{{usuario.cartera}}€</a></li>
         <li id="emailLink"><a type="text" href="/publicaciones">{{usuario.email}}</a></li>
-        <li><a id="logoutLink" href="/desconectarse">Desconectarse</a></li>
+        <li><a id="logoutLink"  href="/desconectarse">Desconectarse</a></li>
           {% endif %}
             </ul>
     </div>

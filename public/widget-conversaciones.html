@@ -26,7 +26,7 @@
 </div>
 <script>
 var conver=JSON.parse(Cookies.get('conversacion'));
-alert(JSON.stringify(conver));
+//alert(JSON.stringify(conver));
 
     window.history.pushState("", "", "/cliente.html?w=conversacion");
 //alert(Cookies.get('email'));
@@ -52,13 +52,13 @@ alert(JSON.stringify(conver));
             },
             success: function (respuesta) {
                // actualizarTablaZero(conver);
-                alert(JSON.stringify(respuesta));
+                //alert(JSON.stringify(respuesta));
                 actualizarTabla();
 
             },
             error: function (error) {
-                alert("error al intentar insertar mensaje");
-                $("#contenedor-principal").load("widget-login.html");
+               // alert("error al intentar insertar mensaje");
+                $("#contenedor-principal").load("widget-conversacion.html");
             }
         });
     }  catch(err){
@@ -139,7 +139,7 @@ alert(JSON.stringify(conver));
     alert(err);
 }}
 try{
-    actualizarDetallesConversacion(conver);
+        actualizarDetallesConversacion(conver);
 actualizarTablaZero(conver);
     actualizarTabla();
 //actualizamos mensajes cada 15 segundos
