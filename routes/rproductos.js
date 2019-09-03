@@ -102,6 +102,8 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.insertarProducto(producto, function (id) {
             if (id == null) {
                 res.send("Error al insertar producto");
+            }else  if (req.body.precio<0) {
+                res.send("Error: se recibio un valor negativo de precio");
             }else {
                 res.redirect("/publicaciones?mensaje=el producto se inserto correctamente");
             }
@@ -270,6 +272,8 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerProductos(criterio, function (productos) {
             if (productos == null) {
                 res.send(respuesta);
+            }else  if (req.params.precio<0) {
+                res.send("Error: se recibio un valor negativo de precio");
             } else {
                 var respuesta = swig.renderFile('views/bproductoModificar.html',
                     {
@@ -287,11 +291,14 @@ module.exports = function (app, swig, gestorBD) {
         var producto = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
- fecha: req.body.fecha,precio: req.body.precio
+            fecha: req.body.fecha,
+            precio: req.body.precio
         }
         gestorBD.modificarProducto(criterio, producto, function (result) {
             if (result == null) {
                 res.send("Error al modificar ");
+            }else  if (req.body.precio<0) {
+                res.send("Error: se recibio un valor negativo de precio");
             } else {
                 res.redirect("/publicaciones");
             }
