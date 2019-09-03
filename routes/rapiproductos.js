@@ -75,7 +75,7 @@ module.exports = function (app, gestorBD) {
                 })
                 console.log("se ha producido un error insertando prodcuto desde la api");
                 app.get("logger").error("se ha producido un error insertando prodcuto desde la api");
-            }else if (precio < 0) {
+            }else if (req.body.precio < 0) {
                 res.status(406);
                 res.json({
                     error: "numero negativo"

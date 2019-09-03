@@ -17,7 +17,7 @@ module.exports = function(app, swig, gestorBD) {
             nombre : req.body.nombre,
             apellidos : req.body.apellidos,
             email : req.body.email,
-            cartera: 100,
+            cartera: 100.0,
             password : seguro,
             tipoUsuario: 1 //tipo 1 usuario normal, tipo 2 admin
         }
