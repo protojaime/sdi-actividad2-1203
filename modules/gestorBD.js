@@ -322,6 +322,7 @@ module.exports = {
             if (err) {
                 funcionCallback(null);
             } else {
+
                 var collection = db.collection('productos');
                 collection.find(criterio).toArray(function(err, productos) {
                     if (err) {

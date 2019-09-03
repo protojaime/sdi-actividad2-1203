@@ -104,7 +104,7 @@ routerUsuarioAutor.use(function(req, res, next) {
 // en el router si los params van en la URL.
     gestorBD.obtenerProductos(
         {_id: mongo.ObjectID(id) }, function (productos) {
-            if(productos[0].autoremail == req.session.usuario.email ){
+            if(req.session.usuario !=(null || undefined) && productos[0].autoremail == req.session.usuario.email ){
                 next();
             } else {
                 res.redirect("/tienda");
