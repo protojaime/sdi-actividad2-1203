@@ -155,8 +155,10 @@ routerUsuarioToken.use(function(req, res, next) {
 // Aplicar routerUsuarioToken
 app.use('/api/producto', routerUsuarioToken);
 app.use("/api/conversacion",routerUsuarioToken);
+app.use("/api/conversaciones",routerUsuarioToken);
 app.use("/api/producto/conversacion",routerUsuarioToken);
 app.use("/api/insertamensaje/conversacion",routerUsuarioToken);
+
 
 
 var swig = require('swig');

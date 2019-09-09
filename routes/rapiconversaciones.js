@@ -1,6 +1,25 @@
 module.exports = function (app, gestorBD) {
 
-
+    app.get("/api/conversaciones/", function (req, res) {
+        console.log("correo: "+req.headers['email']);
+        let criterio = {
+            $or:[{
+            autoremail: {$ne: req.headers['email']}},
+            {interesadoemail: {$ne: req.headers['email']}}
+            ]
+        };
+        gestorBD.obtenerConversaciones(criterio, function (productos) {
+            if (productos == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else {
+                res.status(200);
+                res.send(JSON.stringify(productos));
+            }
+        });
+    });
 
     app.get("/api/producto/conversacion/:id", function (req, res) {
         console.log('id: /producto/conversacion: ' + req.params.id);

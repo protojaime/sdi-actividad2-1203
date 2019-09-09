@@ -1,0 +1,169 @@
+<div id="widget-listaconversaciones">
+    <input type="text" class="form-control" placeholder="Filtrar por nombre"
+           id="filtro-nombre"/>
+    <button class="btn" onclick="cargarConversaciones()">Actualizar</button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th><a onclick="ordenarPorNombre()">ID Producto</a></th>
+            <th>correo autor</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody id="tablaCuerpo">
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    window.history.pushState("", "", "/cliente.html?w=conversaciones");
+    var productos;
+    function cargarConversaciones() {
+        $.ajax({
+            url: URLbase + "/conversaciones/",
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token,
+                email: Cookies.get('email'),
+            },
+            success: function (respuesta) {
+                productos = respuesta;
+                actualizarTabla(productos);
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+    function actualizarTabla(productosMostrar) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        for (i = 0; i < productosMostrar.length; i++) {
+            $("#tablaCuerpo").append(
+                "<tr id=" + productosMostrar[i]._id + ">" +
+                "<td>" + productosMostrar[i].productoid + "</td>" +
+                "<td>" + productosMostrar[i].autoremail + "</td>" +
+                "<td>" +
+                "<a onclick=enviarMensaje('" + productosMostrar[i].productoid + "')>Mensajear</a><br>" +
+                "</td>" +
+                "</tr>");
+            // Mucho cuidado con las comillas del eliminarProducto
+            //la id tiene que ir entre comillas ' '
+        }
+    }
+    /*
+
+
+      function eliminar(_id) {
+          $.ajax({
+              url: URLbase + "/producto/" + _id,
+              type: "DELETE",
+              data: {},
+              dataType: 'json',
+              headers: {"token": token},
+              success: function (respuesta) {
+                  console.log("Eliminada: " + _id);
+                  $("#" + _id).remove(); // eliminar el <tr> de la producto
+              },
+              error: function (error) {
+                  $("#contenedor-principal").load("widget-login.html");
+              }
+          });
+      }
+
+       */
+
+
+    function enviarMensaje(_id) {
+        $.ajax({
+            url: URLbase + "/producto/conversacion/" + _id,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {
+                "token": token,
+                email: Cookies.get('email'),
+                id: _id,
+            },
+            success: function (respuesta) {
+
+                $.ajax({
+                    url: URLbase + "/conversacion/" + respuesta.toString(),
+                    type: "GET",
+                    data: {},
+                    dataType: 'json',
+                    headers: {
+                        "token": token,
+                        email: Cookies.get('email'),
+                        id: respuesta.toString(),
+                    },
+                    success: function (respuesta2) {
+
+                        Cookies.set('conversacion',respuesta2[0]);
+                        $("#contenedor-principal").load("widget-conversaciones.html");
+
+
+                    }, error: function (error2) {
+                        alert('Error al intentar entrar en la conversacion');
+                        $("#contenedor-principal").load("widget-login.html");
+                    }
+                });
+            },
+                    error: function (error) {
+                        alert('Error al intentar encontrar la conversacion');
+                        $("#contenedor-principal").load("widget-login.html");
+                    }
+                });
+
+
+        }
+
+
+
+    cargarConversaciones();
+    function detalles(_id) {
+        idProductoSeleccionada = _id;
+        $("#contenedor-principal").load("widget-detalles.html");
+    }
+    cargarConversaciones();
+    function detalles(_id) {
+        idProductoSeleccionada = _id;
+        $("#contenedor-principal").load("widget-detalles.html");
+    }
+    function widgetAgregar() {
+        $("#contenedor-principal").load("widget-agregar.html");
+    }
+    $('#filtro-nombre').on('input', function (e) {
+        var productosFiltradas = [];
+        var nombreFiltro = $("#filtro-nombre").val();
+        for (i = 0; i < productos.length; i++) {
+            if (productos[i].nombre.indexOf(nombreFiltro) != -1) {
+                productosFiltradas.push(productos[i]);
+            }
+        }
+        actualizarTabla(productosFiltradas);
+    });
+    var precioDsc = true;
+    function ordenarPorPrecio() {
+        if (precioDsc) {
+            productos.sort(function (a, b) {
+                return parseFloat(a.precio) - parseFloat(b.precio);
+            });
+        } else {
+            productos.sort(function (a, b) {
+                return parseFloat(b.precio) - parseFloat(a.precio);
+            });
+        }
+        actualizarTabla(productos);
+        precioDsc = !precioDsc; //invertir
+    }
+    function ordenarPorNombre() {
+        productos.sort(function (a, b) {
+            if (a.nombre > b.nombre) return 1;
+            if (a.nombre < b.nombre) return -1;
+            return 0;
+        });
+        actualizarTabla(productos);
+    }
+</script>
