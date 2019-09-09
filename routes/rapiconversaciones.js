@@ -4,8 +4,8 @@ module.exports = function (app, gestorBD) {
         console.log("correo: "+req.headers['email']);
         let criterio = {
             $or:[{
-            autoremail: {$ne: req.headers['email']}},
-            {interesadoemail: {$ne: req.headers['email']}}
+            autoremail: {$eq: req.headers['email']}},
+            {interesadoemail: {$eq: req.headers['email']}}
             ]
         };
         gestorBD.obtenerConversaciones(criterio, function (productos) {

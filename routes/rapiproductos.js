@@ -105,13 +105,16 @@ module.exports = function (app, gestorBD) {
                 res.send(JSON.stringify(productos[0]));
             }
         });
-    });
+  });
 
 
 
 
     app.delete("/api/producto/:id", function (req, res) {
-        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+        var criterio = { $and: [{
+            "_id": {$eq: gestorBD.mongo.ObjectID(req.params.id)}},{
+                "autoremail": {$eq:  gestorBD.mongo.ObjectID(req.body.email)}}
+    ]};
 
         gestorBD.eliminarProducto(criterio, function (productos) {
             if (productos == null) {
