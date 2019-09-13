@@ -180,7 +180,7 @@ app.get('/eliminarTodosConversaciones', function (req, res) {
 
 
     app.post('/EliminarUsuarios', function (req, res) {
-
+if(req.session.usuario.tipoUsuario == 2){
         let idUsuariosBorrar = req.body.idUsuariosBorrar;
         if (!Array.isArray(idUsuariosBorrar)) {
             let aux = idUsuariosBorrar;
@@ -192,8 +192,10 @@ app.get('/eliminarTodosConversaciones', function (req, res) {
         };
         gestorBD.eliminarUsuarios(criterio, function (usuarios) {
             if (usuarios == null) {
-                console.log("Fallo al intentar eliminar los usuarios");
-                app.get("logger").error("Fallo al intentar eliminar los usuarios");
+                console.log("error: Fallo al intentar eliminar los usuarios");
+                app.get("logger").error("error: Fallo al intentar eliminar los usuarios");
+                res.redirect("/listadoUsuarios?mensaje=error: Fallo al intentar eliminar los usuarios"+
+                    "&tipoMensaje=alert-danger ");
             } else {
                 let criterio = {
                     autoremail:
@@ -201,7 +203,9 @@ app.get('/eliminarTodosConversaciones', function (req, res) {
                 };
                 gestorBD.eliminarProducto(criterio, function (productos) {
                     if (productos == null) {
-                        res.redirect("/listadoUsuarios?mensaje=Los productos de alguno/s de los usuario/s borrados no pudieron ser borrados"+
+                        console.log("error: Los productos de alguno/s de los usuario/s borrados no pudieron ser borrados");
+                        app.get("logger").error("error: Los productos de alguno/s de los usuario/s borrados no pudieron ser borrados");
+                        res.redirect("/listadoUsuarios?mensaje=error: Los productos de alguno/s de los usuario/s borrados no pudieron ser borrados"+
                             "&tipoMensaje=alert-danger ");
                     } else {
                         res.redirect("/listadoUsuarios");
@@ -209,6 +213,12 @@ app.get('/eliminarTodosConversaciones', function (req, res) {
                 });
             }
         });
+}else{
+    console.log("error: el usuario logeado no esta autorizado para hacer esta operacion");
+    app.get("logger").error("error: el usuario logeado no esta autorizado para hacer esta operacion");
+    res.redirect("/listadoUsuarios?mensaje=error: el usuario logeado no esta autorizado para hacer esta operacion"+
+        "&tipoMensaje=alert-danger ");
+}
     })
 
 
