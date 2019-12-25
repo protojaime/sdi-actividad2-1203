@@ -1,8 +1,5 @@
 module.exports = function (app, gestorBD) {
 
-
-
-
     app.get("/api/producto/", function (req, res) {
         console.log("correo: "+req.headers['email']);
         let criterio = {
@@ -113,7 +110,8 @@ module.exports = function (app, gestorBD) {
     app.delete("/api/producto/:id", function (req, res) {
         var criterio = { $and: [{
             "_id": {$eq: gestorBD.mongo.ObjectID(req.params.id)}},{
-                "autoremail": {$eq:  gestorBD.mongo.ObjectID(req.body.email)}}
+                "autoremail": {$eq:  gestorBD.mongo.ObjectID(req.body.email)}
+        }
     ]};
 
         gestorBD.eliminarProducto(criterio, function (productos) {
