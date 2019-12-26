@@ -21,7 +21,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-
+import com.uniovi.tests.pageobjects.PO_ApiView;
 import com.uniovi.tests.pageobjects.PO_ConversationView;
 import com.uniovi.tests.pageobjects.PO_LoginApiView;
 import com.uniovi.tests.pageobjects.PO_LoginView;
@@ -717,10 +717,8 @@ public void PR32() {
 	PO_LoginApiView.fillForm(driver, "test1@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
-	PO_View.checkElement(driver, "text", "Producto 2");
-	PO_View.checkElement(driver, "text", "Producto 3");
-	PO_View.checkElement(driver, "text", "Producto 4");
-	PO_View.checkElement(driver, "text", "Producto 5");
+    SeleniumUtils.esperarSegundos(driver, 2);
+   	PO_View.checkElement(driver, "text","Mensajear");
 // los productos que pertenecen al usuario no aparecen
 	ExpectedConditions.invisibilityOfElementLocated(By.partialLinkText("Producto 6"));
 	ExpectedConditions.invisibilityOfElementLocated(By.partialLinkText("Producto 1"));
@@ -735,6 +733,8 @@ public void PR33() {
 	PO_LoginApiView.fillForm(driver, "test1@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
+    SeleniumUtils.esperarSegundos(driver, 2);
+   	PO_View.checkElement(driver, "text","Mensajear");
 	//leemos los productos
     List<WebElement> usersList = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
             PO_View.getTimeout());
@@ -758,6 +758,8 @@ public void PR34() {
 	PO_LoginApiView.fillForm(driver, "test1@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
+    SeleniumUtils.esperarSegundos(driver, 2);
+   	PO_View.checkElement(driver, "text","Mensajear");
 	//leemos los productos
     List<WebElement> usersList = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
             PO_View.getTimeout());
@@ -775,5 +777,66 @@ public void PR34() {
     PO_ConversationView.sendMessage(driver, "Nuevo Mensaje");
 	
 }
+@Test
+public void PR36() {
+	
+	driver.navigate().to(URL + "/cliente.html?w=login");
+	// Rellenamos el formulario
+	PO_LoginApiView.fillForm(driver, "test3@gmail.com", "1234");
+    SeleniumUtils.esperarSegundos(driver, 2);
+	// COmprobamos que entramos en la pagina privada del usuario
+    SeleniumUtils.esperarSegundos(driver, 2);
+   	PO_View.checkElement(driver, "text","Mensajear");
+	//vamos a la lista de conversaciones
+    PO_ApiView.gotoConversations(driver);
+    //comprobamos que estamos en conversaciones
+    PO_View.checkElement(driver, "text", "ID Producto");
+  //leemos las conversaciones
+    List<WebElement> usersList = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
+            PO_View.getTimeout());
+    //borramos la primera
+    assertEquals(2, usersList.size());
+    usersList.get(0).findElement(By.linkText("Borrar")).click();
+      //comprobamos que se ha borrado la conversacion
+    SeleniumUtils.esperarSegundos(driver, 3);
+usersList = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
+            PO_View.getTimeout());
+    assertEquals(1, usersList.size());
+    try {
+		MongoDBControl.prepararBase();
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+}
+@Test
+public void PR37() {
+	
+	driver.navigate().to(URL + "/cliente.html?w=login");
+	// Rellenamos el formulario
+	PO_LoginApiView.fillForm(driver, "test3@gmail.com", "1234");
+    SeleniumUtils.esperarSegundos(driver, 2);
+	// COmprobamos que entramos en la pagina privada del usuario
+    SeleniumUtils.esperarSegundos(driver, 2);
+   	PO_View.checkElement(driver, "text","Mensajear");
+	//vamos a la lista de conversaciones
+    PO_ApiView.gotoConversations(driver);
+    //comprobamos que estamos en conversaciones
+    PO_View.checkElement(driver, "text", "ID Producto");
+  //leemos las conversaciones
+    List<WebElement> usersList = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
+            PO_View.getTimeout());
+    //borramos la ultima
+    assertEquals(2, usersList.size());
+    usersList.get(1).findElement(By.linkText("Borrar")).click();
+      //comprobamos que se ha borrado la conversacion
+    SeleniumUtils.esperarSegundos(driver, 3);
+usersList = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
+            PO_View.getTimeout());
+    assertEquals(1, usersList.size());
+
+	
+}
+
+
 }
 

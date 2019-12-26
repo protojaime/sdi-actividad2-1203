@@ -138,6 +138,20 @@ public class MongoDBControl {
 					.append("comprador",null)
 					);
 			
+			//conversaciones
+						collection = getMongodb().getCollection("conversaciones");
+						collection.insertOne(new Document()
+								.append("productoid","5e04866f9361dc56f0b8b159")
+								.append("autoremail","test2@gmail.com")
+								.append("interesadoemail","test3@gmail.com")
+								);
+						collection.insertOne(new Document()
+								.append("productoid","5e04866f9361dc56f0b8b15b")
+								.append("autoremail","test4@gmail.com")
+								.append("interesadoemail","test3@gmail.com")
+								);
+						
+									
 			
 			
 			
