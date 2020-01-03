@@ -119,6 +119,7 @@ module.exports = {
                 var collection = db.collection('conversaciones');
                 collection.remove({}, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);
@@ -273,6 +274,7 @@ module.exports = {
                 var collection = db.collection('conversaciones');
                 collection.insert(conversacion, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result.ops[0]._id);
@@ -291,6 +293,7 @@ module.exports = {
                 var collection = db.collection('mensajes');
                 collection.insert(mensaje, function(err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result.ops[0]);
@@ -309,6 +312,7 @@ module.exports = {
                 var collection = db.collection('mensajes');
                 collection.find(criterio).toArray(function (err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);
@@ -346,6 +350,7 @@ module.exports = {
                 var collection = db.collection('productos');
                 collection.find(criterio).toArray(function(err, productos) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(productos);
@@ -386,6 +391,7 @@ module.exports = {
                 var collection = db.collection('productos');
                 collection.insert(producto, function (err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result.ops[0]._id);
@@ -405,6 +411,7 @@ module.exports = {
                     $set: criterio2
                 }, function (err, result) {
                     if (err) {
+                        app.get("logger").error(err.toString());
                         funcionCallback(null);
                     } else {
                         funcionCallback(result);

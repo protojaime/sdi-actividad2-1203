@@ -782,6 +782,37 @@ public void PR34() {
 	
 }
 @Test
+public void PR35() {
+	
+	driver.navigate().to(URL + "/cliente.html?w=login");
+	// Rellenamos el formulario
+	SeleniumUtils.esperarSegundos(driver, 2);
+	PO_LoginApiView.fillForm(driver, "test3@gmail.com", "1234");
+    SeleniumUtils.esperarSegundos(driver, 2);
+	// COmprobamos que entramos en la pagina privada del usuario
+    SeleniumUtils.esperarSegundos(driver, 2);
+   	PO_View.checkElement(driver, "text","Mensajear");
+	//vamos a la lista de conversaciones
+    PO_ApiView.gotoConversations(driver);
+    //comprobamos que estamos en conversaciones
+    PO_View.checkElement(driver, "text", "ID Producto");
+  //leemos las conversaciones
+    List<WebElement> usersList = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
+            PO_View.getTimeout());
+    //vemos que hay 2 conversaciones como esperabamos
+    assertEquals(2, usersList.size());
+    //vemos que son de los productos esperados
+    PO_View.checkElement(driver, "text", "5e04866f9361dc56f0b8b159");
+    PO_View.checkElement(driver, "text", "5e04866f9361dc56f0b8b15b");
+    try {
+		MongoDBControl.prepararBase();
+	} catch (ParseException e) {
+		e.printStackTrace();
+	}
+}
+
+
+@Test
 public void PR36() {
 	
 	driver.navigate().to(URL + "/cliente.html?w=login");
