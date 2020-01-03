@@ -687,6 +687,7 @@ public void PR25() {
 public void PR29() {
 	driver.navigate().to(URL + "/cliente.html?w=login");
 	// Rellenamos el formulario
+	SeleniumUtils.esperarSegundos(driver, 2);
 	PO_LoginApiView.fillForm(driver, "test1@gmail.com", "1234");
 	// COmprobamos que entramos en la pagina privada del usuario
     SeleniumUtils.esperarSegundos(driver, 2);
@@ -714,6 +715,7 @@ public void PR31() {
 public void PR32() {
 	driver.navigate().to(URL + "/cliente.html?w=login");
 	// Rellenamos el formulario
+	SeleniumUtils.esperarSegundos(driver, 2);
 	PO_LoginApiView.fillForm(driver, "test1@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
@@ -730,6 +732,7 @@ public void PR33() {
 	
 	driver.navigate().to(URL + "/cliente.html?w=login");
 	// Rellenamos el formulario
+	SeleniumUtils.esperarSegundos(driver, 2);
 	PO_LoginApiView.fillForm(driver, "test1@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
@@ -755,6 +758,7 @@ public void PR34() {
 	
 	driver.navigate().to(URL + "/cliente.html?w=login");
 	// Rellenamos el formulario
+	SeleniumUtils.esperarSegundos(driver, 2);
 	PO_LoginApiView.fillForm(driver, "test1@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
@@ -782,6 +786,7 @@ public void PR36() {
 	
 	driver.navigate().to(URL + "/cliente.html?w=login");
 	// Rellenamos el formulario
+	SeleniumUtils.esperarSegundos(driver, 2);
 	PO_LoginApiView.fillForm(driver, "test3@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
@@ -813,6 +818,7 @@ public void PR37() {
 	
 	driver.navigate().to(URL + "/cliente.html?w=login");
 	// Rellenamos el formulario
+	   SeleniumUtils.esperarSegundos(driver, 2);
 	PO_LoginApiView.fillForm(driver, "test3@gmail.com", "1234");
     SeleniumUtils.esperarSegundos(driver, 2);
 	// COmprobamos que entramos en la pagina privada del usuario
