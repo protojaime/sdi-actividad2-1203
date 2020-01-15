@@ -24,7 +24,7 @@
  <div class="form-group">
         <label class="control-label col-sm-2" for="agregar-tipo2">Tipo 2</label>
         <div class="col-sm-10" id="agregar-tipo2">
-            <select required>
+            <select required name="tipo2">
                 <option value="vehiculo" selected>vehiculo</option>
                 <option value="electronicos" selected>electronicos</option>
                 <option value="belleza">belleza</option>
