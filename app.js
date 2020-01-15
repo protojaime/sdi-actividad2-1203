@@ -1,3 +1,11 @@
+
+//URL app local:
+//https://localhost:8081
+//URL api local:
+//https://localhost:8081/cliente.html?w=productos
+
+
+
 // Módulos
 var express = require('express');
 var app = express();
