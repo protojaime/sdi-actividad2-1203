@@ -1,7 +1,7 @@
 module.exports = function (app, gestorBD) {
 
     app.get("/api/conversaciones/", function (req, res) {
-        console.log("correo: "+req.headers['email']);
+
         let criterio = {
             $or:[{
             autoremail: {$eq: req.headers['email']}},
@@ -16,6 +16,7 @@ module.exports = function (app, gestorBD) {
                 })
             } else {
                 res.status(200);
+              //  console.log(JSON.stringify(productos));
                 res.send(JSON.stringify(productos));
             }
         });
@@ -138,4 +139,41 @@ module.exports = function (app, gestorBD) {
             }
         });
     });
+
+    app.delete("/api/conversacion/:id", function (req, res) {
+        console.log("correo: "+req.headers['email']);
+        console.log(gestorBD.mongo.ObjectID(req.params.id));
+        var criterio = { $and: [{
+                "_id": {$eq: gestorBD.mongo.ObjectID(req.params.id)}},{
+                $or: [{
+                "autoremail": {$eq:  req.headers['email']}
+                },
+                    {
+                        "interesadoemail": {$eq: req.headers['email']}
+                    }
+                    ]
+
+
+            }
+            ]};
+        gestorBD.eliminarConversacion(criterio, function (productos) {
+            if (productos == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else {
+                res.status(200);
+
+                console.log("se elimino la conversación");
+                res.send(JSON.stringify(productos));
+            }
+        });
+    });
+
+
+
+
+
+
 }

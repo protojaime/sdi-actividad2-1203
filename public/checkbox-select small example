@@ -1,0 +1,40 @@
+
+ // how to make checkbox
+ <div class="form-group">
+        <label class="control-label col-sm-2" for="agregar-tipo1">Tipo 1</label>
+        <div class="col-sm-10" id="agregar-tipo1">
+            <label class="control-label col-sm-2" for="fragil">fragil</label>
+            <input type="checkbox" name="tipo1" value="fragil" id="fragil">fragil<br>
+            <label class="control-label col-sm-2" for="caro">caro</label>
+            <input type="checkbox" name="tipo1" value="caro" id="caro"> caro<br>
+            <label class="control-label col-sm-2" for="organico">organico</label>
+            <input type="checkbox" name="tipo1" value="organico" id="organico"> organico<br><br>
+        </div>
+    </div>
+    //how to extract them with ajax
+    var tipo1="(";
+            $("#agregar-tipo1 [name=tipo1]:checked").each(function(){
+                tipo1 += ($(this).val()) + ",";
+            });
+            tipo1+=")";
+
+
+//------------------------------------------
+//checklist
+ <div class="form-group">
+        <label class="control-label col-sm-2" for="agregar-tipo2">Tipo 2</label>
+        <div class="col-sm-10" id="agregar-tipo2">
+            <select required>
+                <option value="vehiculo" selected>vehiculo</option>
+                <option value="electronicos" selected>electronicos</option>
+                <option value="belleza">belleza</option>
+                <option value="armas">armas</option>
+            </select>
+        </div>
+    </div>
+
+    //how to extract the selected option
+
+    tipo2 : $("#agregar-tipo2 option:selected").text()
+
+

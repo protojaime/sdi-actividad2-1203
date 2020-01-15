@@ -46,25 +46,33 @@
                 "<td>" + productosMostrar[i].autoremail + "</td>" +
                 "<td>" +
                 "<a onclick=enviarMensaje('" + productosMostrar[i].productoid + "')>Mensajear</a><br>" +
+                "<a onclick=eliminar('" + productosMostrar[i]._id + "')>Borrar</a><br>" +
                 "</td>" +
                 "</tr>");
             // Mucho cuidado con las comillas del eliminarProducto
             //la id tiene que ir entre comillas ' '
         }
     }
-    /*
+
 
 
       function eliminar(_id) {
           $.ajax({
-              url: URLbase + "/producto/" + _id,
+              url: URLbase + "/conversacion/" + _id,
               type: "DELETE",
-              data: {},
+              data: {
+                  email: Cookies.get('email')
+              },
               dataType: 'json',
-              headers: {"token": token},
+              headers: {
+                  "token": token,
+                  email: Cookies.get('email'),
+                  id: _id,
+              },
               success: function (respuesta) {
                   console.log("Eliminada: " + _id);
                   $("#" + _id).remove(); // eliminar el <tr> de la producto
+                  $("#contenedor-principal").load("widget-listaconversaciones.html");
               },
               error: function (error) {
                   $("#contenedor-principal").load("widget-login.html");
@@ -72,19 +80,20 @@
           });
       }
 
-       */
+
 
 
     function enviarMensaje(_id) {
         $.ajax({
             url: URLbase + "/producto/conversacion/" + _id,
             type: "GET",
-            data: {},
+            data: {
+
+            },
             dataType: 'json',
             headers: {
                 "token": token,
-                email: Cookies.get('email'),
-                id: _id,
+                email: Cookies.get('email')
             },
             success: function (respuesta) {
 
